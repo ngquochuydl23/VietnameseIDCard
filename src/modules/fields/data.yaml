@@ -1,0 +1,14 @@
+path: ./dataset
+train: ./train/images # train images (relative to 'path')
+val: ./valid/images # val images (relative to 'path')
+nc: 9
+names:
+  0: id
+  1: full_name
+  2: date_of_birth
+  3: sex
+  4: nationality
+  5: place_of_origin
+  6: place_of_residence
+  7: date_of_expiry
+  8: qr_code

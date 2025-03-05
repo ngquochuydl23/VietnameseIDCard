@@ -1,0 +1,10 @@
+.idea
+*.pt
+cccd
+CCCD_Word_Detection.v2i.yolov8
+dataset-v2
+root
+runs
+.venv
+src/modules/*/__pycache__
+src/modules/*/dataset
