@@ -14,7 +14,7 @@ def get_centre_point_boxex(boxes):
     for box in boxes:
         x, y = get_centre_point_box(box)
         centre_points.append((x, y))
-        print(f'Center: ({x}, {y})')
+        #print(f'Center: ({x}, {y})')
         
     return centre_points
         

@@ -1,4 +1,4 @@
-path: ./dataset
+path: ./dataset_v2
 train: ./train/images # train images (relative to 'path')
 val: ./valid/images # val images (relative to 'path')
 nc: 9

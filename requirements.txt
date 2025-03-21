@@ -8,4 +8,5 @@ ultralytics
 torchvision
 torch
 tensorflow
+tqdm
 

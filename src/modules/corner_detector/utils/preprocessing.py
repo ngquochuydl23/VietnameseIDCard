@@ -18,17 +18,20 @@ def order_points(pts):
     return rect
 
 def warp_image_with_centres(origin_img, centre_points, output_size=(800, 600)):
-    width, height = output_size
-    pts = np.array(centre_points, dtype="float32")
+    try:
+        width, height = output_size
+        pts = np.array(centre_points, dtype="float32")
 
-    ordered_pts = order_points(pts)
-    dst_pts = np.array([
-        [0, 0],
-        [width - 1, 0],
-        [width - 1, height - 1],
-        [0, height - 1]
-    ], dtype="float32")
-    
-    # Tính ma trận biến đổi và warp
-    M = cv2.getPerspectiveTransform(ordered_pts, dst_pts)
-    return cv2.warpPerspective(origin_img, M, (width, height))
+        ordered_pts = order_points(pts)
+        dst_pts = np.array([
+            [0, 0],
+            [width - 1, 0],
+            [width - 1, height - 1],
+            [0, height - 1]
+        ], dtype="float32")
+
+        # Tính ma trận biến đổi và warp
+        M = cv2.getPerspectiveTransform(ordered_pts, dst_pts)
+        return cv2.warpPerspective(origin_img, M, (width, height))
+    except:
+        return None

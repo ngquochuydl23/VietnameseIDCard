@@ -2,10 +2,14 @@ from ultralytics import YOLO
 import os
 import torch
 
-class CornerDetector:
-    def __init__(self, model = "yolov8n.pt"):
-        self.model = YOLO(model)
+class FieldDetector:
+    def __init__(self, model = "yolov8n.pt", verbose=False, fused=False):
+        self.model = YOLO(model, verbose=verbose)
         self.model.info()
+
+        if fused:
+            print("Enabled fuse")
+            self.model.fuse()
 
     def device_info(self):
         print(f"Is GPU available?: {torch.cuda.is_available()}")
@@ -28,15 +32,10 @@ class CornerDetector:
         self.model.save(out)
 
     def predict(self, img):
-        return self.model(img)
+        return self.model(img, verbose=False)
 
     def get_model(self):
         return self.model
     
-if __name__ == '__main__':
-    detector = CornerDetector()
 
-    #detector.train()
-    detector.train(data="src/modules/fields-recognition/data.yaml")
-    detector.save("new_version.pt")
 

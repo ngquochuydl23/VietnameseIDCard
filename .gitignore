@@ -8,4 +8,14 @@ runs
 .venv
 src/modules/*/__pycache__
 src/modules/*/dataset
-src/modules/*/dataset_v2
+src/modules/*/*.jpg
+src/modules/*/*.png
+src/modules/*/models
+src/modules/*/dataset_*
+src/modules/*/dataset
+
+src/modules/*/raw
+src/modules/*/*.jpg
+
+
+src/modules/outputs
