@@ -1,6 +1,7 @@
 from ultralytics import YOLO
 import os
 import torch
+import numpy as np
 
 class FieldDetector:
     def __init__(self, model = "yolov8n.pt", verbose=False, fused=False):
@@ -36,6 +37,15 @@ class FieldDetector:
 
     def get_model(self):
         return self.model
+    
+    def evaluate(self, data):
+        metrics = self.model.val(data=data)
+        return {
+            "mean_mAP50": np.mean(metrics.box.map50),
+            "mean_mAP50-95": np.mean(metrics.box.map),
+            "mean_precision": np.mean(metrics.box.mp),
+            "mean_recall": np.mean(metrics.box.mr)
+        }
     
 
 
