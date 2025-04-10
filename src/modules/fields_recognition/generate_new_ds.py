@@ -41,8 +41,8 @@ def generate(path, type, detector, corner_detector, position, lock, confident_th
 
         results = detector.predict(wrapped_img)
 
-        label_file_name = os.path.join(new_labels, f'{idx}.txt')
-        img_file_name = os.path.join(new_imgs, f'{idx}.png')
+        label_file_name = os.path.join(new_labels, f'{type}_{idx}.txt')
+        img_file_name = os.path.join(new_imgs, f'{type}_{idx}.png')
 
         with open(label_file_name, 'w+') as label_file:
             print(label_file)
@@ -73,10 +73,10 @@ def generate(path, type, detector, corner_detector, position, lock, confident_th
 
 TYPES = ['train', 'test', 'valid']
 ROOT_DATASET_DIR = 'dataset_raw'
-NEW_DATASET_DIR = './dataset_v2.1'
+NEW_DATASET_DIR = './dataset_v2.1_new'
 
 if __name__ == '__main__':
-    detector = FieldDetector('cccdYoloV8.pt', fused=True)
+    detector = FieldDetector('best.pt', fused=True)
     corner_detector = CornerDetector('../corner_detector/models/corner_detector_v2.1.pt', fused=True)
 
     # detector.device_info()
