@@ -37,8 +37,8 @@ class CornerDetector:
     def save(self, out="best_model.pt"):
         self.model.save(out)
 
-    def predict(self, img, save=False):
-        return self.model(img, save=save, verbose=False)
+    def predict(self, img, save=False, verbose=False):
+        return self.model(img, save=save, verbose=verbose)
 
     def evaluate(self, data):
         metrics = self.model.val(data=data)
