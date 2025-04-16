@@ -6,7 +6,6 @@ seaborn
 opencv-python
 ultralytics
 torchvision
-torch
-tensorflow
+#torch==2.8.0
+#tensorflow
 tqdm
-

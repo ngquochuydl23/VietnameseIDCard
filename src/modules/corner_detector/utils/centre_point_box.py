@@ -24,5 +24,5 @@ def draw_centre_points(original_img, points):
     # Convert RGB to BGR (for OpenCV)
     cv2_img = cv2.cvtColor(cv2_img, cv2.COLOR_RGB2BGR)
     for point in points:
-        cv2.circle(cv2_img, (int(point[0]), int(point[1])), radius=5, color=(255, 0, 0), thickness=-1)
+        cv2.circle(cv2_img, (int(point[0]), int(point[1])), radius=5, color=(255, 0, 0), thickness=2)
     return cv2_img

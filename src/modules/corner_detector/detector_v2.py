@@ -6,9 +6,9 @@ import numpy as np
 import logging
 
 class CornerDetector:
-    def __init__(self, model="yolov8n.pt", verbose=False, fused = False):
+    def __init__(self, model="yolov8n.pt", fused = False):
         self.device = None
-        self.model = YOLO(model, verbose=verbose)
+        self.model = YOLO(model)
 
         if fused:
             logging.info("Enabled fuse")

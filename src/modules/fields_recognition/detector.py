@@ -46,16 +46,16 @@ class FieldDetector:
             mosaic=1.0,
             mixup=0.2)
 
-        def save(self, out="best_model.pt"):
+    def save(self, out="best_model.pt"):
             self.model.save(out)
 
-        def predict(self, img):
+    def predict(self, img):
             return self.model(img, verbose=False)
 
-        def get_model(self):
+    def get_model(self):
             return self.model
 
-        def evaluate(self, data):
+    def evaluate(self, data):
             metrics = self.model.val(data=data)
             return {
                 "mean_mAP50": np.mean(metrics.box.map50),
