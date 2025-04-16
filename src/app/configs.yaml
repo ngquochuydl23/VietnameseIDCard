@@ -1,0 +1,7 @@
+ocr_config:
+  model: vietocr
+  pretrained_cnn_model: vgg_transformer
+  device: cuda
+
+field_config:
+  model: ../models/yolov8n.pt

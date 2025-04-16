@@ -1,4 +1,4 @@
-from detector_v2 import CornerDetector
+from corner_detector import CornerDetector
 import logging
 
 if __name__ == '__main__':

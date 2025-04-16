@@ -1,7 +1,7 @@
 import os
 import cv2
 from detector import FieldDetector
-from src.modules.corner_detector.detector_v2 import CornerDetector
+from src.modules.corner_detector.corner_detector import CornerDetector
 from src.modules.corner_detector.utils.centre_point_box import get_centre_point_boxex
 from src.modules.corner_detector.utils.preprocessing import warp_image_with_centres
 from multiprocessing import Process, Lock
