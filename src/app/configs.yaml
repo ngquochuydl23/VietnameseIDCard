@@ -4,7 +4,7 @@ ocr_config:
   device: cuda
 
 corner_config:
-  model: ../models/corner_detector_v2.1.pt
+  model: src/models/corner_detector_v2.1.pt
 
 field_config:
-  model: ../models/field_detector_v2.pt
+  model: src/models/field_detector_v2.pt

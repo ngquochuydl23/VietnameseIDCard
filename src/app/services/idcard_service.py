@@ -10,7 +10,7 @@ from src.app.utils.bytes_to_nparray import convert_file_to_nparray
 
 class IdCardService:
     def __init__(self):
-        with open('configs.yaml', 'r') as file:
+        with open('src/app/configs.yaml', 'r') as file:
             config = yaml.safe_load(file)
 
         self.ocr_config = config['ocr_config']

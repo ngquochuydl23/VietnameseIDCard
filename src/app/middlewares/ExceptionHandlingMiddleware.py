@@ -1,7 +1,6 @@
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from isapi.isapicon import HTTP_INTERNAL_SERVER_ERROR
 import logging
 
 class ExceptionHandlingMiddleware(BaseHTTPMiddleware):
@@ -10,7 +9,7 @@ class ExceptionHandlingMiddleware(BaseHTTPMiddleware):
             response = await call_next(request)
             return response
         except StarletteHTTPException as exc:
-            # Handling specific HTTP exceptions (e.g., 404 Not Found, 400 Bad Request)
+            # Handling specific HTTP middlewares (e.g., 404 Not Found, 400 Bad Request)
             return JSONResponse(
                 status_code=exc.status_code,
                 content={
@@ -22,7 +21,7 @@ class ExceptionHandlingMiddleware(BaseHTTPMiddleware):
         except Exception as exc:
             logging.error(f"Unhandled error: {str(exc)}")
             return JSONResponse(
-                status_code=HTTP_INTERNAL_SERVER_ERROR,
+                status_code=500,
                 content={
                     "detail": "Internal Server Error",
                     "message": str(exc)

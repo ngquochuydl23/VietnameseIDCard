@@ -4,9 +4,8 @@ import json
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse
 from services.idcard_service import IdCardService
-from exceptions.ExceptionHandlingMiddleware import ExceptionHandlingMiddleware
+from middlewares.ExceptionHandlingMiddleware import ExceptionHandlingMiddleware
 from utils.gpu_utils import check_gpu
-from isapi.isapicon import HTTP_OK
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -28,9 +27,9 @@ async def ping():
 async def extract_idcard(front_card: UploadFile = File(...), back_card: UploadFile = File(...)):
     result = idcard_service.idcard_extract_combine(front_card, back_card)
     return JSONResponse(
-        status_code=HTTP_OK,
+        status_code=200,
         content={
-            "statusCode": HTTP_OK,
+            "statusCode": 200,
             "result": result
         })
 
@@ -38,9 +37,9 @@ async def extract_idcard(front_card: UploadFile = File(...), back_card: UploadFi
 async def extract_front_idcard(front_card: UploadFile = File(...)):
     result = await idcard_service.idcard_extract_front(front_card)
     return JSONResponse(
-        status_code=HTTP_OK,
+        status_code=200,
         content={
-            "statusCode": HTTP_OK,
+            "statusCode": 200,
             "result": result
         })
 
