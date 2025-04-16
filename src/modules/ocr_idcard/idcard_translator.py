@@ -1,21 +1,17 @@
 import cv2
-import os
 import pytesseract
-import torch
 import numpy as np
-import matplotlib.pyplot as plt
 from vietocr.tool.predictor import Predictor
 from vietocr.tool.config import Cfg
 from PIL import Image
 
 
 class IdCardTranslator():
-    def __init__(
-            self,
-            lang='vie',
-            tesseract_config=r'--oem 3 --psm 6',
-            vietocr_config='vgg_transformer',
-            engine='vietocr'):
+    def __init__(self,
+                lang='vie',
+                tesseract_config=r'--oem 3 --psm 6',
+                vietocr_config='vgg_transformer',
+                engine='vietocr'):
 
         self.lang = lang
         self.tesseract_config = tesseract_config
@@ -47,7 +43,8 @@ class IdCardTranslator():
             alpha=0.6,
             beta=0.4):
 
-        img = cv2.imread(img)
+        if isinstance(img, str):
+            img = cv2.imread(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         img = self.resize_image(img, scale_factor=scale_factor)
 
@@ -72,31 +69,21 @@ class IdCardTranslator():
 
         return cleaned
 
-    def read_info(self, idcard_info):
+    def read_info(self, crops):
         result = {}
-        for key in idcard_info:
-            if idcard_info[key] == None:
-                print("Field image is null")
-                result[key] = None
-            else:
-                preprocessed_img = self.processing_img(idcard_info[key])
+        for idx, crop in enumerate(crops):
+            class_name = crop["class_name"]
+            if  class_name != "qr_code":
+                
+                preprocessed_img = self.processing_img(crop["field_img"])
                 field_text = self.read_field(preprocessed_img)
+                result[class_name] = field_text
+                
+        if result["place_of_residence"] and result["extend_place_of_residence"]:
+            result["place_of_residence"] += f' {result["extend_place_of_residence"]}'
+            result.pop("extend_place_of_residence")
 
-                result[key] = field_text
         return result
-
-    def plot_images(self, idcard_info):
-        plt.figure(figsize=(12, 4))
-        idx = 0
-        for key in idcard_info:
-            preprocessed_img = self.processing_img(idcard_info[key])
-            field_text = self.read_field(preprocessed_img)
-            print(text)
-            plt.subplot(3, 4, idx + 1)
-            plt.imshow(cleaned, cmap='gray')
-            plt.axis('off')
-
-            idx += 1
 
     def resize_image(self, image, scale_factor=2.0):
         # Resize the image by scaling

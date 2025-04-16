@@ -21,3 +21,5 @@ src/modules/*/*.jpg
 src/modules/outputs
 
 src/models
+
+__pycache__

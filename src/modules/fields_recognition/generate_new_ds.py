@@ -10,8 +10,6 @@ import threading
 import logging
 
 
-
-
 def generate(path, type, detector, corner_detector, position, lock, confident_threshold):
     ds_path = os.path.join(path, type)
 

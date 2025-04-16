@@ -3,5 +3,8 @@ ocr_config:
   pretrained_cnn_model: vgg_transformer
   device: cuda
 
+corner_config:
+  model: ../models/corner_detector_v2.1.pt
+
 field_config:
-  model: ../models/yolov8n.pt
+  model: ../models/field_detector_v2.pt
