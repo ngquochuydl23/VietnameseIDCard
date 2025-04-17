@@ -55,4 +55,4 @@ async def extract_back_idcard(back_card: UploadFile = File(...)):
 
 if __name__ == "__main__":
     logger.info(json.dumps(check_gpu(), indent=4))
-    uvicorn.run(app, port=2012)
+    uvicorn.run(app, host="0.0.0.0", port=2012)
