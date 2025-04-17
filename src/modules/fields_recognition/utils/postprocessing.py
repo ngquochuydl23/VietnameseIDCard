@@ -16,7 +16,6 @@ def extract_field_images(detector, img):
     boxes = results[0].boxes.data
     boxes = sorted(boxes, key=lambda box: (box[5], box[1], box[0]))
     crops = []
-
     hit_poo = False
 
     for box in boxes:

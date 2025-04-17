@@ -20,7 +20,7 @@ class FieldDetector:
             print(f"Device name: {torch.cuda.get_device_name(0)}")
             self.device = 'cuda'
         else:
-            self.device = 'cuda'
+            self.device = 'cpu'
         self.model.to(self.device)
 
     def train(self, data, epochs=50, imgsz=640):

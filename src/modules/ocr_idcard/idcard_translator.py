@@ -4,7 +4,7 @@ import numpy as np
 from vietocr.tool.predictor import Predictor
 from vietocr.tool.config import Cfg
 from PIL import Image
-
+import torch
 
 class IdCardTranslator():
     def __init__(self,
@@ -23,9 +23,9 @@ class IdCardTranslator():
     def setup_engine(self):
         if self.engine == 'vietocr':
             self.vietocr_config = Cfg.load_config_from_name(self.vietocr_config)
-            self.vietocr_detector = Predictor(self.vietocr_config)
             self.vietocr_config['cnn']['pretrained'] = False
-            self.vietocr_config['device'] = 'cuda'
+            self.vietocr_config['device'] = 'cuda' if torch.cuda.is_available() else 'cpu'
+            self.vietocr_detector = Predictor(self.vietocr_config)
         else:
             pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
@@ -79,10 +79,13 @@ class IdCardTranslator():
                 field_text = self.read_field(preprocessed_img)
                 result[class_name] = field_text
                 
-        if result["place_of_residence"] and result["extend_place_of_residence"]:
+        # if result.get("place_of_residence") and result.get("extend_place_of_residence"):
+        #     result["place_of_residence"] += f' {result["extend_place_of_residence"]}'
+        #     result.pop("extend_place_of_residence")
+        print(result)
+        if ("place_of_residence" in result) and ("extend_place_of_residence" in result):
             result["place_of_residence"] += f' {result["extend_place_of_residence"]}'
             result.pop("extend_place_of_residence")
-
         return result
 
     def resize_image(self, image, scale_factor=2.0):
