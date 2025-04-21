@@ -50,7 +50,7 @@ class FieldDetector:
             self.model.save(out)
 
     def predict(self, img):
-            return self.model(img, verbose=False)
+        return self.model(img, verbose=False)
 
     def get_model(self):
             return self.model

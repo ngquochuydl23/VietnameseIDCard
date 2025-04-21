@@ -1,4 +1,4 @@
-class_names = [
+front_class_names = [
     'id',
     'full_name',
     'date_of_birth',
@@ -10,6 +10,12 @@ class_names = [
     'qr_code'
 ]
 
+back_class_names = [
+    'fingerprint',
+    'issue_date',
+    'issue_place',
+    'personal_identification'
+]
 
 def extract_field_images(detector, img):
     results = detector.predict(img)
@@ -28,8 +34,23 @@ def extract_field_images(detector, img):
             hit_poo = (class_id == 5 and not hit_poo)
             crops.append({"class_name": "place_of_origin", "field_img": crop})
         else:
-            crops.append({"class_name": class_names[class_id], "field_img": crop})
+            crops.append({"class_name": front_class_names[class_id], "field_img": crop})
     return crops
+
+def extract_back_field_images(detector, img):
+    results = detector.predict(img)
+    boxes = results[0].boxes.data
+    boxes = sorted(boxes, key=lambda box: (box[5], box[1], box[0]))
+    crops = []
+
+    for box in boxes:
+        x1, y1, x2, y2, confidence, class_id = map(int, box[:6])
+        print(box)
+        crop = img[y1:y2, x1:x2]
+        crops.append({"class_name": back_class_names[class_id], "field_img": crop})
+    return crops
+
+
 
 
 

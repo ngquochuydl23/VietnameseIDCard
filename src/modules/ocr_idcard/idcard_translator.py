@@ -6,6 +6,9 @@ from vietocr.tool.config import Cfg
 from PIL import Image
 import torch
 
+from src.modules.ocr_idcard.utils.issue_place_utils import auto_correct_issue_place
+
+
 class IdCardTranslator():
     def __init__(self,
                 lang='vie',
@@ -69,23 +72,34 @@ class IdCardTranslator():
 
         return cleaned
 
-    def read_info(self, crops):
+    def read_front_info(self, crops):
         result = {}
         for idx, crop in enumerate(crops):
             class_name = crop["class_name"]
             if  class_name != "qr_code":
-                
                 preprocessed_img = self.processing_img(crop["field_img"])
                 field_text = self.read_field(preprocessed_img)
                 result[class_name] = field_text
-                
-        # if result.get("place_of_residence") and result.get("extend_place_of_residence"):
-        #     result["place_of_residence"] += f' {result["extend_place_of_residence"]}'
-        #     result.pop("extend_place_of_residence")
-        print(result)
+
         if ("place_of_residence" in result) and ("extend_place_of_residence" in result):
             result["place_of_residence"] += f' {result["extend_place_of_residence"]}'
             result.pop("extend_place_of_residence")
+        return result
+
+    def read_back_info(self, crops):
+        result = {}
+        for idx, crop in enumerate(crops):
+            class_name = crop["class_name"]
+            if class_name != "fingerprint":
+                preprocessed_img = crop["field_img"]
+                #preprocessed_img = self.processing_img(crop["field_img"])
+                field_text = self.read_field(preprocessed_img)
+                result[class_name] = field_text
+
+        if "issue_place" in result:
+            result["issue_place"], score = auto_correct_issue_place(result["issue_place"], 0.3)
+
+
         return result
 
     def resize_image(self, image, scale_factor=2.0):

@@ -18,9 +18,6 @@ class ExceptionHandlingMiddleware(BaseHTTPMiddleware):
                 content={"status_code": exc.status_code, "message": exc.message})
         except Exception as exc:
             logging.error(f"Unhandled error: {str(exc)}")
-            logging.error(exc.format_exc())
-
-            print(exc.format_exc())
             return JSONResponse(
                 status_code=500,
                 content={

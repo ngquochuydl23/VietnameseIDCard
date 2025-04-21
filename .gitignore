@@ -13,6 +13,7 @@ src/modules/*/*.png
 src/modules/*/models
 src/modules/*/dataset_*
 src/modules/*/dataset
+src/modules/*/test
 
 src/modules/*/raw
 src/modules/*/*.jpg
