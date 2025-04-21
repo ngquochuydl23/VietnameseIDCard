@@ -7,4 +7,4 @@ corner_config:
   model: src/models/corner_detector_v2.1.pt
 
 field_config:
-  model: src/models/field_detector_v2.pt
+  model: src/models/field_detector_v3.pt
