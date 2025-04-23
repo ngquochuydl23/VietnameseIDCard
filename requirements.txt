@@ -15,3 +15,4 @@ fastapi[standard]
 uvicorn
 pyyaml
 fuzzywuzzy
+python-Levenshtein
