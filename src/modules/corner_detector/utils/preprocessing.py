@@ -1,28 +1,25 @@
 import cv2
 import numpy as np
+import traceback
 
+def order_points(c_pts):
+    sorted_centre_points = sorted(c_pts, key=lambda x: x['class_id'])
 
-def order_points(pts):
-    rect = np.zeros((4, 2), dtype="float32")
+    bottom_left = sorted_centre_points[0]
+    bottom_right = sorted_centre_points[1]
+    top_left = sorted_centre_points[2]
+    top_right = sorted_centre_points[3]
+    return [top_left, top_right, bottom_right, bottom_left]
 
-    # Tổng của x + y --> top-left có tổng nhỏ nhất, bottom-right có tổng lớn nhất
-    s = pts.sum(axis=1)
-    rect[0] = pts[np.argmin(s)]  # top-left
-    rect[2] = pts[np.argmax(s)]  # bottom-right
-
-    # Hiệu x - y --> top-right có hiệu nhỏ nhất, bottom-left có hiệu lớn nhất
-    diff = np.diff(pts, axis=1)
-    rect[1] = pts[np.argmin(diff)]  # top-right
-    rect[3] = pts[np.argmax(diff)]  # bottom-left
-
-    return rect
 
 def warp_image_with_centres(origin_img, centre_points, output_size=(800, 600)):
     try:
         width, height = output_size
-        pts = np.array(centre_points, dtype="float32")
+        sorted_centre_points = order_points(centre_points)
 
-        ordered_pts = order_points(pts)
+        pts = np.array([[pt['x_center'], pt['y_center']] for pt in sorted_centre_points], dtype="float32")
+        print(pts)
+
         dst_pts = np.array([
             [0, 0],
             [width - 1, 0],
@@ -30,8 +27,10 @@ def warp_image_with_centres(origin_img, centre_points, output_size=(800, 600)):
             [0, height - 1]
         ], dtype="float32")
 
-        # Tính ma trận biến đổi và warp
-        M = cv2.getPerspectiveTransform(ordered_pts, dst_pts)
-        return cv2.warpPerspective(origin_img, M, (width, height))
-    except:
+        M = cv2.getPerspectiveTransform(pts, dst_pts)
+        warped_img = cv2.warpPerspective(origin_img, M, (width, height))
+        return warped_img
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        traceback.print_exc()
         return None

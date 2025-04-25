@@ -28,7 +28,7 @@ async def ping():
 
 @app.post("/api/idcard-extract", tags=["IdCard"])
 async def extract_idcard(front_card: UploadFile = File(...), back_card: UploadFile = File(...)):
-    result = idcard_service.idcard_extract_combine(front_card, back_card)
+    result = await idcard_service.idcard_extract_combine(front_card, back_card)
     return JSONResponse(
         status_code=200,
         content={"statusCode": 200, "result": result})
