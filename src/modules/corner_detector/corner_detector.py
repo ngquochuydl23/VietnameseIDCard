@@ -51,3 +51,6 @@ class CornerDetector:
 
     def get_model(self):
         return self.model
+
+    def get_classes(self):
+        return self.model.names
