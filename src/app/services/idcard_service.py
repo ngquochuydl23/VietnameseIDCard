@@ -1,7 +1,6 @@
 import yaml
 import asyncio
 import logging
-import torch
 from src.modules.corner_detector.corner_detector import CornerDetector
 from src.modules.fields_recognition.back_detector import BackFieldDetector
 from src.modules.fields_recognition.detector import FieldDetector
@@ -12,15 +11,14 @@ from src.modules.fields_recognition.utils.postprocessing import extract_field_im
 from src.app.utils.bytes_to_nparray import convert_file_to_nparray
 from src.app.exceptions.app_exception import AppException
 import cv2
-from ultralytics.utils.ops import non_max_suppression
 
 from src.modules.shared.utils.nms import apply_non_max_suppression
 
 logger = logging.getLogger(__name__)
 
 class IdCardService:
-    def __init__(self):
-        with open('src/app/configs.yaml', 'r') as file:
+    def __init__(self, config_file='src/app/configs.yaml'):
+        with open(config_file, 'r') as file:
             config = yaml.safe_load(file)
         self.ocr_config = config['ocr_config']
         self.front_field_config = config['front_field_config']
@@ -53,9 +51,7 @@ class IdCardService:
 
         centre_points = get_centre_point_boxes(nms_result, classes)
         preprocess_img = warp_image_with_centres(front_img, centre_points, output_size=(800, 600))
-        cv2.imwrite('preprocess_img.png', preprocess_img)
         crops = extract_field_images(self.front_field_detector, preprocess_img)
-
         if not crops:
             raise AppException('Cannot detect any fields in idcard.')
         return self.idcard_translator.read_front_info(crops)
