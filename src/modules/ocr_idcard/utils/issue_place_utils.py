@@ -1,0 +1,77 @@
+from fuzzywuzzy import process
+
+ISSUES_PLACES = [
+    "CỤC TRƯỞNG CỤC CẢNH SÁT QUẢN LÝ HÀNH CHÍNH VỀ TRẬT TỰ XÃ HỘI",
+    "GIÁM ĐỐC CÔNG AN THÀNH PHỐ HÀ NỘI",
+    "GIÁM ĐỐC CÔNG AN TỈNH HÀ GIANG",
+    "GIÁM ĐỐC CÔNG AN TỈNH CAO BẰNG",
+    "GIÁM ĐỐC CÔNG AN TỈNH BẮC KẠN",
+    "GIÁM ĐỐC CÔNG AN TỈNH TUYÊN QUANG",
+    "GIÁM ĐỐC CÔNG AN TỈNH LÀO CAI",
+    "GIÁM ĐỐC CÔNG AN TỈNH ĐIỆN BIÊN",
+    "GIÁM ĐỐC CÔNG AN TỈNH LAI CHÂU",
+    "GIÁM ĐỐC CÔNG AN TỈNH SƠN LA",
+    "GIÁM ĐỐC CÔNG AN TỈNH YÊN BÁI",
+    "GIÁM ĐỐC CÔNG AN TỈNH HOÀ BÌNH",
+    "GIÁM ĐỐC CÔNG AN TỈNH THÁI NGUYÊN",
+    "GIÁM ĐỐC CÔNG AN TỈNH LẠNG SƠN",
+    "GIÁM ĐỐC CÔNG AN TỈNH QUẢNG NINH",
+    "GIÁM ĐỐC CÔNG AN TỈNH BẮC GIANG",
+    "GIÁM ĐỐC CÔNG AN TỈNH PHÚ THỌ",
+    "GIÁM ĐỐC CÔNG AN TỈNH VĨNH PHÚC",
+    "GIÁM ĐỐC CÔNG AN TỈNH BẮC NINH",
+    "GIÁM ĐỐC CÔNG AN TỈNH HẢI DƯƠNG",
+    "GIÁM ĐỐC CÔNG AN THÀNH PHỐ HẢI PHÒNG",
+    "GIÁM ĐỐC CÔNG AN TỈNH HƯNG YÊN",
+    "GIÁM ĐỐC CÔNG AN TỈNH THÁI BÌNH",
+    "GIÁM ĐỐC CÔNG AN TỈNH HÀ NAM",
+    "GIÁM ĐỐC CÔNG AN TỈNH NAM ĐỊNH",
+    "GIÁM ĐỐC CÔNG AN TỈNH NINH BÌNH",
+    "GIÁM ĐỐC CÔNG AN TỈNH THANH HOÁ",
+    "GIÁM ĐỐC CÔNG AN TỈNH NGHỆ AN",
+    "GIÁM ĐỐC CÔNG AN TỈNH HÀ TĨNH",
+    "GIÁM ĐỐC CÔNG AN TỈNH QUẢNG BÌNH",
+    "GIÁM ĐỐC CÔNG AN TỈNH QUẢNG TRỊ",
+    "GIÁM ĐỐC CÔNG AN TỈNH THỪA THIÊN HUẾ",
+    "GIÁM ĐỐC CÔNG AN THÀNH PHỐ ĐÀ NẴNG",
+    "GIÁM ĐỐC CÔNG AN TỈNH QUẢNG NAM",
+    "GIÁM ĐỐC CÔNG AN TỈNH QUẢNG NGÃI",
+    "GIÁM ĐỐC CÔNG AN TỈNH BÌNH ĐỊNH",
+    "GIÁM ĐỐC CÔNG AN TỈNH PHÚ YÊN",
+    "GIÁM ĐỐC CÔNG AN TỈNH KHÁNH HOÀ",
+    "GIÁM ĐỐC CÔNG AN TỈNH NINH THUẬN",
+    "GIÁM ĐỐC CÔNG AN TỈNH BÌNH THUẬN",
+    "GIÁM ĐỐC CÔNG AN TỈNH KON TUM",
+    "GIÁM ĐỐC CÔNG AN TỈNH GIA LAI",
+    "GIÁM ĐỐC CÔNG AN TỈNH ĐẮK LẮK",
+    "GIÁM ĐỐC CÔNG AN TỈNH ĐẮK NÔNG",
+    "GIÁM ĐỐC CÔNG AN TỈNH LÂM ĐỒNG",
+    "GIÁM ĐỐC CÔNG AN TỈNH BÌNH PHƯỚC",
+    "GIÁM ĐỐC CÔNG AN TỈNH TÂY NINH",
+    "GIÁM ĐỐC CÔNG AN TỈNH BÌNH DƯƠNG",
+    "GIÁM ĐỐC CÔNG AN TỈNH ĐỒNG NAI",
+    "GIÁM ĐỐC CÔNG AN TỈNH BÀ RỊA - VŨNG TÀU",
+    "GIÁM ĐỐC CÔNG AN THÀNH PHỐ HỒ CHÍ MINH",
+    "GIÁM ĐỐC CÔNG AN TỈNH LONG AN",
+    "GIÁM ĐỐC CÔNG AN TỈNH TIỀN GIANG",
+    "GIÁM ĐỐC CÔNG AN TỈNH BẾN TRE",
+    "GIÁM ĐỐC CÔNG AN TỈNH TRÀ VINH",
+    "GIÁM ĐỐC CÔNG AN TỈNH VĨNH LONG",
+    "GIÁM ĐỐC CÔNG AN TỈNH ĐỒNG THÁP",
+    "GIÁM ĐỐC CÔNG AN TỈNH AN GIANG",
+    "GIÁM ĐỐC CÔNG AN TỈNH KIÊN GIANG",
+    "GIÁM ĐỐC CÔNG AN THÀNH PHỐ CẦN THƠ",
+    "GIÁM ĐỐC CÔNG AN TỈNH HẬU GIANG",
+    "GIÁM ĐỐC CÔNG AN TỈNH SÓC TRĂNG",
+    "GIÁM ĐỐC CÔNG AN TỈNH BẠC LIÊU",
+    "GIÁM ĐỐC CÔNG AN TỈNH CÀ MAU"
+]
+
+def auto_correct_issue_place(issue_place, threshold = 0.3):
+    best_match, score = process.extractOne(issue_place, ISSUES_PLACES)
+    if score >= threshold:
+        issue_place = best_match
+
+    return issue_place, score
+
+

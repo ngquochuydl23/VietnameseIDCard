@@ -4,7 +4,7 @@ import json
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse
 from services.idcard_service import IdCardService
-from middlewares.ExceptionHandlingMiddleware import ExceptionHandlingMiddleware
+from middlewares.exception_handling_middleware import ExceptionHandlingMiddleware
 from utils.gpu_utils import check_gpu
 
 logging.basicConfig(level=logging.INFO)
