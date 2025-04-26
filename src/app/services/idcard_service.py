@@ -33,7 +33,6 @@ class IdCardService:
     async def idcard_extract_combine(self, front_card, back_card):
         front_img = await convert_file_to_nparray(front_card)
         back_img = await convert_file_to_nparray(back_card)
-
         front_info, back_info = await asyncio.gather(
             self.idcard_extract_front(front_img),
             self.idcard_extract_back(back_img)
