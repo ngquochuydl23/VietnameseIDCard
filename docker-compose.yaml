@@ -1,0 +1,10 @@
+version: '3.4'
+services:
+  idcard-vue:
+    container_name: idcard-vue
+    build:
+      context: ./src/ui
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - 2011:8080

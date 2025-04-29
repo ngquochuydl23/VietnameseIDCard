@@ -17,11 +17,13 @@ src/modules/*/test
 
 src/modules/*/raw
 src/modules/*/*.jpg
-
-src/ui/.env
-src/ui/.env.production
 src/modules/outputs
 
 src/models
 
 __pycache__
+
+src/ui/.env
+src/ui/.env.production
+src/ui/node_modules
+src/ui/dist
