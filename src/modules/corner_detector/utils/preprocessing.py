@@ -18,8 +18,6 @@ def warp_image_with_centres(origin_img, centre_points, output_size=(800, 600)):
         sorted_centre_points = order_points(centre_points)
 
         pts = np.array([[pt['x_center'], pt['y_center']] for pt in sorted_centre_points], dtype="float32")
-        print(pts)
-
         dst_pts = np.array([
             [0, 0],
             [width - 1, 0],

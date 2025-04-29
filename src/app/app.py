@@ -3,6 +3,8 @@ import logging
 import json
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse
+from starlette.middleware.cors import CORSMiddleware
+
 from services.idcard_service import IdCardService
 from middlewares.exception_handling_middleware import ExceptionHandlingMiddleware
 from utils.gpu_utils import check_gpu
@@ -13,7 +15,14 @@ logger = logging.getLogger(__name__)
 idcard_service = IdCardService()
 
 app = FastAPI(title="Extract IdCard information API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.add_middleware(ExceptionHandlingMiddleware)
+
 
 
 @app.get("/", include_in_schema=False)

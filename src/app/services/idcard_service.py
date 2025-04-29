@@ -31,11 +31,9 @@ class IdCardService:
         self.idcard_translator = IdCardTranslator(vietocr_config=self.ocr_config['pretrained_cnn_model'])
 
     async def idcard_extract_combine(self, front_card, back_card):
-        front_img = await convert_file_to_nparray(front_card)
-        back_img = await convert_file_to_nparray(back_card)
         front_info, back_info = await asyncio.gather(
-            self.idcard_extract_front(front_img),
-            self.idcard_extract_back(back_img)
+            self.idcard_extract_front(front_card),
+            self.idcard_extract_back(back_card)
         )
         return {"front": front_info, "back": back_info}
 
@@ -57,10 +55,16 @@ class IdCardService:
 
     async def idcard_extract_back(self, back_card):
         back_img = await convert_file_to_nparray(back_card)
-        # corner_result = self.corner_detector.predict(back_img)
-        # centre_points = get_centre_point_boxes(corner_result[0].boxes)
-        # preprocess_img = warp_image_with_centres(back_img, centre_points, output_size=(800, 600))
-        crops = extract_back_field_images(self.back_field_detector, back_img)
+        corner_result = self.corner_detector.predict(back_img)
+        classes = self.corner_detector.get_classes()
+
+        nms_result = apply_non_max_suppression(corner_result)
+        if nms_result is None or len(nms_result) == 0:
+            raise AppException('No corners detected after NMS.')
+
+        centre_points = get_centre_point_boxes(nms_result, classes)
+        preprocess_img = warp_image_with_centres(back_img, centre_points, output_size=(800, 600))
+        crops = extract_back_field_images(self.back_field_detector, preprocess_img)
         if not crops:
             raise AppException('Cannot detect any fields in idcard.')
         return self.idcard_translator.read_back_info(crops)
