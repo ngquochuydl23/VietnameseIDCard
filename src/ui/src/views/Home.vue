@@ -180,7 +180,7 @@
                 <el-select
                   clearable
                   placeholder="Chọn quốc tịch"
-                  v-model="frontIdCardResult.nationality"
+                  v-model="frontIdCardResult.issue_place"
                 >
                   <el-option
                     class="option"
