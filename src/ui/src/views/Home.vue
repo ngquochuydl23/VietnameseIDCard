@@ -82,7 +82,17 @@
         >
           Trích xuất thông tin
         </button>
-        <button @click="clearForm" class="reset-button">Xóa</button>
+        <button
+          @click="
+            (e) => {
+              clearInput();
+              clearOutput();
+            }
+          "
+          class="reset-button"
+        >
+          Xóa
+        </button>
       </div>
       <div class="w-full md:col-span-8 col-span-12 md:mt-0 mt-4">
         <form class="flex flex-col gap-4">
@@ -235,7 +245,8 @@
 import { Calendar } from "@element-plus/icons-vue";
 import { Gender, Country, IssuePlaces } from "../data/idcardData";
 import moment from "moment";
-import axios from "axios";
+import { ElNotification } from "element-plus";
+import { extractIdCardInfo } from "../repositories/IdCardRepository";
 
 export default {
   name: "Home",
@@ -286,9 +297,11 @@ export default {
         };
       }
     },
-    clearForm() {
+    clearInput() {
       this.frontIdCard = null;
       this.backIdCard = null;
+    },
+    clearOutput() {
       this.frontIdCardResult = {
         id: null,
         full_name: null,
@@ -306,6 +319,8 @@ export default {
       };
     },
     async extractIdCard() {
+      this.clearOutput();
+
       if (!this.frontIdCard || !this.backIdCard) return;
       this.loading = true;
 
@@ -314,38 +329,61 @@ export default {
       formData.append("back_card", this.backIdCard?.file);
 
       try {
-        const response = await axios.post(
-          `${process.env.VUE_APP_API_END_POINT}/idcard-extract`,
-          formData,
-          {
-            headers: {
-              accept: "application/json",
-              "Content-Type": "multipart/form-data",
-              "Access-Control-Allow-Origin": "*",
-            },
-          }
-        );
+        const result = await extractIdCardInfo(formData);
+        if (result.front) {
+          this.frontIdCardResult = {
+            ...result.front,
+            date_of_birth: moment(result.front.date_of_birth, "DD/MM/YYYY"),
+          };
+        }
 
-        const frontIdCard = response.data.result.front;
-        const backIdCard = response.data.result.back;
-        this.frontIdCardResult = {
-          ...frontIdCard,
-          date_of_birth: moment(frontIdCard.date_of_birth, "DD/MM/YYYY"),
-        };
-        this.backIdCardResult = {
-          ...backIdCard,
-          issue_date: moment(backIdCard.issue_date, "DD/MM/YYYY"),
-        };
+        if (result.back) {
+          this.backIdCardResult = {
+            ...result.back,
+            issue_date: moment(result.back.issue_date, "DD/MM/YYYY"),
+          };
+        }
         this.loading = false;
+
+        ElNotification({
+          title: "Thành công",
+          message: "Trích xuất thông tin thành công.",
+          type: "success",
+        });
       } catch (error) {
         this.loading = false;
-        console.log(error);
+        if (error.response) {
+          console.error("Backend responded with error:", error.response.data);
+          ElNotification({
+            title: "Lỗi",
+            message: error.response.data.message || "Lỗi không xác định",
+            type: "error",
+          });
+        } else {
+          console.error("Network error or no response:", error.message);
+          ElNotification({
+            title: "Lỗi",
+            message: "Lỗi máy chủ",
+            type: "error",
+          });
+        }
       }
     },
   },
 };
 </script>
 <style scoped>
+.alert {
+  font-weight: bold;
+}
+
+.el-alert {
+  margin: 20px 0 0;
+}
+.el-alert:first-child {
+  margin: 0;
+}
+
 .reset-button {
   width: 100%;
   margin-top: 5px;
