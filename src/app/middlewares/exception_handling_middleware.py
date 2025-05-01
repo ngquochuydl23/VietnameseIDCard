@@ -14,12 +14,17 @@ class ExceptionHandlingMiddleware(BaseHTTPMiddleware):
         except AppException as exc:
             return JSONResponse(
                 status_code=exc.status_code,
-                content={"status_code": exc.status_code, "message": exc.message})
+                headers={"Access-Control-Allow-Origin": "*"},
+                content={
+                    "status_code": exc.status_code,
+                    "message": exc.message,
+                })
         except Exception as exc:
             logging.error(f"Unhandled error: {str(exc)}")
             traceback.print_exc()
             return JSONResponse(
                 status_code=500,
+                headers={"Access-Control-Allow-Origin": "*"},
                 content={
                     "status_code": 500,
                     "detail": "Internal Server Error",

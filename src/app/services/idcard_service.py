@@ -1,6 +1,7 @@
 import yaml
 import asyncio
 import logging
+from src.app.constants.http_msg_constants import NO_CORNER_DETECTED
 from src.modules.corner_detector.corner_detector import CornerDetector
 from src.modules.fields_recognition.back_detector import BackFieldDetector
 from src.modules.fields_recognition.detector import FieldDetector
@@ -10,7 +11,7 @@ from src.modules.corner_detector.utils.preprocessing import warp_image_with_cent
 from src.modules.fields_recognition.utils.postprocessing import extract_field_images, extract_back_field_images
 from src.app.utils.bytes_to_nparray import convert_file_to_nparray
 from src.app.exceptions.app_exception import AppException
-import cv2
+
 
 from src.modules.shared.utils.nms import apply_non_max_suppression
 
@@ -44,13 +45,14 @@ class IdCardService:
 
         nms_result = apply_non_max_suppression(corner_result)
         if nms_result is None or len(nms_result) == 0:
-            raise AppException('No corners detected after NMS.')
+            raise AppException(NO_CORNER_DETECTED)
 
         centre_points = get_centre_point_boxes(nms_result, classes)
         preprocess_img = warp_image_with_centres(front_img, centre_points, output_size=(800, 600))
         crops = extract_field_images(self.front_field_detector, preprocess_img)
         if not crops:
-            raise AppException('Cannot detect any fields in idcard.')
+            #raise AppException(NO_FRONT_FIELDS_DETECTED)
+            return None
         return self.idcard_translator.read_front_info(crops)
 
     async def idcard_extract_back(self, back_card):
@@ -60,11 +62,13 @@ class IdCardService:
 
         nms_result = apply_non_max_suppression(corner_result)
         if nms_result is None or len(nms_result) == 0:
-            raise AppException('No corners detected after NMS.')
+            raise AppException(NO_CORNER_DETECTED)
 
         centre_points = get_centre_point_boxes(nms_result, classes)
         preprocess_img = warp_image_with_centres(back_img, centre_points, output_size=(800, 600))
+
         crops = extract_back_field_images(self.back_field_detector, preprocess_img)
         if not crops:
-            raise AppException('Cannot detect any fields in idcard.')
+            #raise AppException(NO_BACK_FIELDS_DETECTED)
+            return None
         return self.idcard_translator.read_back_info(crops)

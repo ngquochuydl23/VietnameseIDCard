@@ -38,6 +38,11 @@ def extract_field_images(detector, img):
     return crops
 
 def extract_back_field_images(detector, img):
+    height, width = img.shape[:2]
+
+    # Set pixels from center (height // 2) to bottom to white
+    img[height // 2:] = 255  # white in BGR for all channels
+
     results = detector.predict(img)
     boxes = results[0].boxes.data
     boxes = sorted(boxes, key=lambda box: (box[5], box[1], box[0]))
@@ -45,7 +50,6 @@ def extract_back_field_images(detector, img):
 
     for box in boxes:
         x1, y1, x2, y2, confidence, class_id = map(int, box[:6])
-        print(box)
         crop = img[y1:y2, x1:x2]
         crops.append({"class_name": back_class_names[class_id], "field_img": crop})
     return crops
