@@ -27,15 +27,15 @@ export default {
       <!-- Footer social links -->
       <div class="flex flex-col justify-center items-center mb-12 sm:mb-20">
         <p
-          class="text-3xl sm:text-4xl font-semibold text-[#000] dark:text-primary-light mb-5"
+          class="text-2xl sm:text-4xl font-semibold text-[#000] dark:text-primary-light mb-5"
         >
           Báo cáo cuối kỳ • Nhóm 1
         </p>
         <p
-          class="text-xl font-semibold text-[#000] dark:text-primary-light mb-5"
+          class="text-xl font-semibold text-[#000] w-full dark:text-primary-light mb-5"
         >
-          Đề tài: Xây dựng hệ thống Nhận diện và Trích xuất thông tin CCCD dựa
-          trên Deep Learning
+          Đề tài: ỨNG DỤNG MÔ HÌNH HỌC SÂU TRÍCH XUẤT THÔNG TIN CĂN CƯỚC CÔNG
+          DÂN
         </p>
 
         <div style="width: 400px">
@@ -45,7 +45,7 @@ export default {
           Thành viên nhóm:
           <ul>
             <li>21112801 - Nguyễn Quốc Huy</li>
-            <li>21112801 - Lê Thị Thu Hương</li>
+            <li>21111531 - Lê Thị Thu Hương</li>
           </ul>
         </div>
         <!-- <ul class="flex gap-4 sm:gap-8">
