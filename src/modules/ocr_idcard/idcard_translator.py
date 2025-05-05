@@ -6,7 +6,7 @@ from vietocr.tool.config import Cfg
 from PIL import Image
 import torch
 
-from src.modules.ocr_idcard.utils.issue_place_utils import auto_correct_issue_place
+from src.modules.ocr_idcard.utils.issue_place_utils import auto_correct_issue_place, ISSUES_PLACES
 
 
 class IdCardTranslator():
@@ -84,6 +84,8 @@ class IdCardTranslator():
         if ("place_of_residence" in result) and ("extend_place_of_residence" in result):
             result["place_of_residence"] += f' {result["extend_place_of_residence"]}'
             result.pop("extend_place_of_residence")
+
+        result["nationality"] = "Việt Nam"
         return result
 
     def read_back_info(self, crops):
@@ -92,14 +94,13 @@ class IdCardTranslator():
             class_name = crop["class_name"]
             if class_name != "fingerprint":
                 preprocessed_img = crop["field_img"]
-                #preprocessed_img = self.processing_img(crop["field_img"])
                 field_text = self.read_field(preprocessed_img)
                 result[class_name] = field_text
 
         if "issue_place" in result:
             result["issue_place"], score = auto_correct_issue_place(result["issue_place"], 0.3)
-
-
+        else:
+            result["issue_place"] = ISSUES_PLACES[0]
         return result
 
     def resize_image(self, image, scale_factor=2.0):

@@ -51,7 +51,6 @@ class IdCardService:
         preprocess_img = warp_image_with_centres(front_img, centre_points, output_size=(800, 600))
         crops = extract_field_images(self.front_field_detector, preprocess_img)
         if not crops:
-            #raise AppException(NO_FRONT_FIELDS_DETECTED)
             return None
         return self.idcard_translator.read_front_info(crops)
 
@@ -69,6 +68,5 @@ class IdCardService:
 
         crops = extract_back_field_images(self.back_field_detector, preprocess_img)
         if not crops:
-            #raise AppException(NO_BACK_FIELDS_DETECTED)
             return None
         return self.idcard_translator.read_back_info(crops)
