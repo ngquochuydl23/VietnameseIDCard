@@ -190,7 +190,7 @@
                 <el-select
                   clearable
                   placeholder="Chọn quốc tịch"
-                  v-model="frontIdCardResult.issue_place"
+                  v-model="backIdCardResult.issue_place"
                 >
                   <el-option
                     class="option"
