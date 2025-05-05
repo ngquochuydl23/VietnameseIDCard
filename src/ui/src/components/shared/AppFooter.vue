@@ -32,7 +32,7 @@ export default {
           Báo cáo cuối kỳ • Nhóm 1
         </p>
         <p
-          class="text-xl font-semibold text-[#000] w-full dark:text-primary-light mb-5"
+          class="text-xl font-semibold text-[#000] dark:text-primary-light mb-5"
         >
           Đề tài: ỨNG DỤNG MÔ HÌNH HỌC SÂU TRÍCH XUẤT THÔNG TIN CĂN CƯỚC CÔNG
           DÂN
