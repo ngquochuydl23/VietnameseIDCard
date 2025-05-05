@@ -1,10 +1,7 @@
 import axios from "axios";
 import _ from "lodash";
 
-export const axiosInstance = axios.create({
-  baseURL: process.env.VUE_APP_API_END_POINT,
-  responseType: "json",
-});
+export const axiosInstance = axios.create({ baseURL: '/api/', responseType: "json" });
 
 axiosInstance.interceptors.request.use(
   function (config) {
