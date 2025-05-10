@@ -39,7 +39,7 @@ export default {
         </p>
 
         <div style="width: 400px">
-          Giảng viên hướng dẫn: Võ Quang Hoàng Khang
+          Giảng viên hướng dẫn: Ths. Võ Quang Hoàng Khang
         </div>
         <div style="width: 400px">
           Thành viên nhóm:

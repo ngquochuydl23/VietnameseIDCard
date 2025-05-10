@@ -6,7 +6,9 @@ from src.modules.base_detector import BaseDetector
 class BackFieldDetector(BaseDetector):
     def train(self, data, epochs=50, imgsz=640):
         if not os.path.exists(data):
-            raise FileNotFoundError(f"Không tìm thấy file {data}. Hãy kiểm tra đường dẫn!")
+            raise FileNotFoundError(
+                f"Không tìm thấy file {data}. Hãy kiểm tra đường dẫn!"
+            )
         self.model.train(
             data=data,
             epochs=epochs,
@@ -24,6 +26,5 @@ class BackFieldDetector(BaseDetector):
             flipud=0.5,
             fliplr=0.5,
             mosaic=1.0,
-            mixup=0.2)
-
-
+            mixup=0.2,
+        )
